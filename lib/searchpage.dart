@@ -20,10 +20,9 @@ class SearchPageState extends State<SearchPage> {
   List searchMovies = [];
   List searchTvShow = [];
 
-  final String apiKey = '5ada7f84fb56fce2f59f719a794e16c8';
+  final String apiKey = 'YOUR_API_KEY';
   final token =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1YWRhN2Y4NGZiNTZmY2UyZjU5ZjcxOWE3OTRlMTZjOCIsInN1YiI6IjY0ZDM0Mjc5YmYzMWYyMDFjYjY3ZmM3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0NkiFm5raLlCUHi3x548YgA2n42NNWS7XPBCzRdnkYQ';
-
+      'YOUR_TOKEN'
   @override
   Widget build(BuildContext context) {
     return Scaffold(
