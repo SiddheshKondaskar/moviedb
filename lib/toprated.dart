@@ -1,7 +1,9 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_interpolation_to_compose_strings
+// ignore_for_file: sized_box_for_whitespace, prefer_interpolation_to_compose_strings, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
 import 'package:moviedb/utils/text.dart';
+
+import 'description.dart';
 
 class TopRatedMovies extends StatelessWidget {
   const TopRatedMovies({super.key, required this.toprated});
@@ -23,31 +25,49 @@ class TopRatedMovies extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 120,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://image.tmdb.org/t/p/w500' +
-                                            toprated[index]['poster_path']))),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            child: ModifyText(
-                                text: toprated[index]['title'] ?? 'Loading...',
-                                color: Colors.white,
-                                size: 14),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Description(
+                                name: toprated[index]['title'],
+                                description: toprated[index]['overview'],
+                                bannerurl: 'https://image.tmdb.org/t/p/w500' +
+                                    toprated[index]['backdrop_path'],
+                                posterurl: 'https://image.tmdb.org/t/p/w500' +
+                                    toprated[index]['poster_path'],
+                                vote:
+                                    toprated[index]['vote_average'].toString(),
+                                launchon: toprated[index]['release_date']),
+                          ));
+                    },
+                    child: toprated[index]['title'] != null
+                        ? Container(
+                            padding: const EdgeInsets.all(5),
+                            width: 140,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              'https://image.tmdb.org/t/p/w500' +
+                                                  toprated[index]
+                                                      ['poster_path']))),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  child: ModifyText(
+                                      text: toprated[index]['title'],
+                                      color: Colors.white,
+                                      size: 14),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
                   );
                 }),
           ),

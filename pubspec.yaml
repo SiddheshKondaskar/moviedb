@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts : ^2.1.0
   tmdb_api :
+  intl: ^0.17.0
+  toggle_switch: ^2.1.0
 
 dev_dependencies:
   flutter_test:

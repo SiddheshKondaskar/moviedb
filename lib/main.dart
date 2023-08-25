@@ -1,17 +1,22 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, sized_box_for_whitespace, avoid_unnecessary_containers, avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:moviedb/toprated.dart';
-import 'package:moviedb/tvpopular.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
-import 'trending.dart';
-import 'utils/text.dart';
+import 'nowplaying.dart';
+import 'popular.dart';
+import 'toprated.dart';
+
+import 'tvnowplaying.dart';
+import 'tvpopular.dart';
+import 'tvtoprated.dart';
+
+import 'searchpage.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +25,25 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  List trendingMovies = [];
+  List popularMovies = [];
   List topRatedMovies = [];
+  List nowPlayingMovies = [];
   List tvPopular = [];
+  List tvTopRated = [];
+  List tvNowPlaying = [];
+
   final String apiKey = '5ada7f84fb56fce2f59f719a794e16c8';
   final token =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1YWRhN2Y4NGZiNTZmY2UyZjU5ZjcxOWE3OTRlMTZjOCIsInN1YiI6IjY0ZDM0Mjc5YmYzMWYyMDFjYjY3ZmM3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0NkiFm5raLlCUHi3x548YgA2n42NNWS7XPBCzRdnkYQ';
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1YWRhN2Y4NGZiNTZmY2UyZjU5ZjcxOWE3OTRlMTZjOCIsInN1YiI6IjY0ZDM0Mjc5YmYzMWYyMDFjYjY3ZmM3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0NkiFm5raLlCUHi3x548YgA2n42NNWS7XPBCzRdnkYQ'; // your API token here
+
+  int selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -42,14 +54,23 @@ class _HomeState extends State<Home> {
   loadMovies() async {
     TMDB tmdbWithCustomLogs = TMDB(ApiKeys(apiKey, token),
         logConfig: const ConfigLogger(showLogs: true, showErrorLogs: true));
-    Map trendingResult = await tmdbWithCustomLogs.v3.trending.getTrending();
+
+    Map nowPlayingResult = await tmdbWithCustomLogs.v3.movies.getNowPlaying();
     Map topRatedResult = await tmdbWithCustomLogs.v3.movies.getTopRated();
-    Map tvPopularResult = await tmdbWithCustomLogs.v3.tv.getTopRated();
+    Map popularResult = await tmdbWithCustomLogs.v3.movies.getPopular();
+
+    Map tvPopularResult = await tmdbWithCustomLogs.v3.tv.getPopular();
+    Map tvTopRatedResult = await tmdbWithCustomLogs.v3.tv.getTopRated();
+    Map tvNowPlayingResult = await tmdbWithCustomLogs.v3.tv.getAiringToday();
 
     setState(() {
-      trendingMovies = trendingResult['results'];
+      nowPlayingMovies = nowPlayingResult["results"];
       topRatedMovies = topRatedResult['results'];
+      popularMovies = popularResult['results'];
+
+      tvNowPlaying = tvNowPlayingResult["results"];
       tvPopular = tvPopularResult['results'];
+      tvTopRated = tvTopRatedResult['results'];
     });
   }
 
@@ -64,13 +85,66 @@ class _HomeState extends State<Home> {
           'images/logo.png', // Replace with your logo image file path
           width: 40, // Adjust the width as needed
         ),
+        actions: [
+          IconButton(
+            color: Colors.white,
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
-      body: ListView(children: [
-        TvPopular(tvpopular: tvPopular),
-        TopRatedMovies(toprated: topRatedMovies),
-        TrendingMovies(trending: trendingMovies),
-      ]),
+      body: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0), // Adjust padding as needed
+            alignment: Alignment.center,
+            child: ToggleSwitch(
+              initialLabelIndex: selectedTabIndex,
+              totalSwitches: 2,
+              labels: const ['Movies', 'TV Shows'],
+              customTextStyles: [
+                GoogleFonts.bebasNeue(
+                    fontSize: 18, fontWeight: FontWeight.w500),
+              ],
+
+              onToggle: (index) {
+                if (index != null) {
+                  setState(() {
+                    selectedTabIndex = index;
+                  });
+                }
+              },
+              inactiveFgColor: Colors.black, // Adjust color as needed
+              inactiveBgColor: Colors.white, // Adjust color as needed
+              minWidth: 80, // Adjust the width of each switch
+              minHeight: 36, // Adjust the height of the switch
+            ),
+          ),
+          selectedTabIndex == 0
+              ? Column(
+                  children: [
+                    NowPlayingMovies(nowplaying: nowPlayingMovies),
+                    TopRatedMovies(toprated: topRatedMovies),
+                    PopularMovies(popular: popularMovies),
+                  ],
+                )
+              : Column(
+                  children: [
+                    TvNowPlaying(tvnowplaying: tvNowPlaying),
+                    TvTopRated(tvtoprated: tvTopRated),
+                    TvPopular(tvpopular: tvPopular),
+                  ],
+                )
+        ],
+      ),
     );
   }
 }

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:moviedb/description.dart';
 import 'package:moviedb/utils/text.dart';
 
-class TvPopular extends StatelessWidget {
-  const TvPopular({super.key, required this.tvpopular});
-  final List tvpopular;
+class TvTopRated extends StatelessWidget {
+  const TvTopRated({super.key, required this.tvtoprated});
+  final List tvtoprated;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,11 @@ class TvPopular extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ModifyText(
-              text: ' Popular Shows', color: Colors.white, size: 26),
+              text: 'Top Rated Shows', color: Colors.white, size: 26),
           Container(
             height: 270,
             child: ListView.builder(
-                itemCount: tvpopular.length,
+                itemCount: tvtoprated.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return InkWell(
@@ -29,18 +29,18 @@ class TvPopular extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => Description(
-                                name: tvpopular[index]['name'],
-                                description: tvpopular[index]['overview'],
+                                name: tvtoprated[index]['name'],
+                                description: tvtoprated[index]['overview'],
                                 bannerurl: 'https://image.tmdb.org/t/p/w500' +
-                                    tvpopular[index]['backdrop_path'],
+                                    tvtoprated[index]['backdrop_path'],
                                 posterurl: 'https://image.tmdb.org/t/p/w500' +
-                                    tvpopular[index]['poster_path'],
-                                vote:
-                                    tvpopular[index]['vote_average'].toString(),
-                                launchon: tvpopular[index]['first_air_date']),
+                                    tvtoprated[index]['poster_path'],
+                                vote: tvtoprated[index]['vote_average']
+                                    .toString(),
+                                launchon: tvtoprated[index]['first_air_date']),
                           ));
                     },
-                    child: tvpopular[index]['name'] != null
+                    child: tvtoprated[index]['name'] != null
                         ? Container(
                             padding: const EdgeInsets.all(5),
                             width: 140,
@@ -53,13 +53,13 @@ class TvPopular extends StatelessWidget {
                                       image: DecorationImage(
                                           image: NetworkImage(
                                               'https://image.tmdb.org/t/p/w500' +
-                                                  tvpopular[index]
+                                                  tvtoprated[index]
                                                       ['poster_path']))),
                                 ),
                                 const SizedBox(height: 5),
                                 Container(
                                   child: ModifyText(
-                                      text: tvpopular[index]['name'],
+                                      text: tvtoprated[index]['name'],
                                       color: Colors.white,
                                       size: 14),
                                 ),
