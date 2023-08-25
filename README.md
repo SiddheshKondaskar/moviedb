@@ -1,6 +1,6 @@
 # MovieDB
 
-MovieDB is a Flutter Application that focuses on showcasing information about movies and TV shows. It allows users to browse through popular, top-rated, and now-playing movies, as well as popular and top-rated TV shows. The app aims to provide an immersive experience for users to discover and learn about different movies and TV shows.
+MovieDB is a Flutter Application that provides an elegant and user-friendly interface for browsing Movies and TV Shows. This dynamic app seamlessly integrates with the TMDB API, enabling efficient searches for a wide range of movies and TV shows. Users can explore comprehensive details of selected content, including titles, descriptions, release dates, and viewer ratings
 
 ## Key Features
 - Popular Movies: Displays a list of popular movies, including their posters and titles.
@@ -17,7 +17,7 @@ To run the app locally, follow these steps:
 1. Clone the repository
 2. Navigate to the project directory: `cd movieDB`
 3. Install dependencies: `flutter pub get`
-4. For API Integration: Replace 'API_KEY' in `api.dart` with your valid MovieDB API key.
+4. For API Integration: Replace API key and Token in `main.dart` with your valid API key and Token generated from TMDB.
 5. Run the app: `flutter run`
 
 ## Screenshots
@@ -25,4 +25,3 @@ To run the app locally, follow these steps:
   <img src="images/popular_movies.jpeg" alt="Popular Movies" width="200" height="400">
 </p>
 
-This Flutter application provides users with an interactive and engaging platform to explore movies and TV shows, enhancing their entertainment experience.
