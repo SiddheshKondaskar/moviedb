@@ -22,6 +22,8 @@ To run the app locally, follow these steps:
 
 ## Screenshots
 <p float="left">
-  <img src="images/popular_movies.jpeg" alt="Popular Movies" width="200" height="400">
+  <img src="images/1.png" alt="Movies" width="200" height="400">
+  <img src="images/2.png" alt="TV" width="200" height="400">
+  <img src="images/3.png" alt="search" width="200" height="400">
 </p>
 
